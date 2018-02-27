@@ -62,7 +62,7 @@ RUN conda config --system --append channels r && \
     fix-permissions /home/$NB_USER
 
 # Install and enable JupyterLab and Hub integration
-RUN conda install -y -c conda-forge jupyterlab ipywidgets beakerx && \
+RUN conda install -v -y -c conda-forge jupyterlab beakerx && \
     jupyter serverextension enable --py jupyterlab --sys-prefix && \
     jupyter labextension install @jupyterlab/hub-extension && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager && \

@@ -6,6 +6,8 @@ LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 
 USER root
 
+ENV GRANT_SUDO yes
+
 # Prerequisites
 RUN apt-get update && \
     apt-get install -y --no-install-recommends libav-tools \

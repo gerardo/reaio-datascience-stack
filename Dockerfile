@@ -19,6 +19,8 @@ RUN apt-get update && \
 
 USER $NB_UID
 
+ENV GRANT_SUDO yes
+
 # Install Python 3 packages
 # Remove pyqt and qt pulled in for matplotlib since we're only ever going to
 # use notebook-friendly backends in these images

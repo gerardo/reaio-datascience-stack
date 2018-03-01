@@ -20,7 +20,7 @@ RUN apt-get update && \
 RUN wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.1.85-1_amd64.deb && \
  dpkg -i cuda-repo-ubuntu1604_9.1.85-1_amd64.deb && \
  apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub && \
- apt-get update; apt-get install -y linux-headers-$(uname -r) cuda-9.0 && \
+ apt-get update; apt-get install -y cuda-9.0 && \
  wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb && \
  wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb && \
  dpkg -i libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb

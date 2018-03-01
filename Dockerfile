@@ -9,21 +9,22 @@ USER root
 RUN echo "$NB_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/notebook
 
 # Prerequisites
-RUN apt-get update && \
+RUN wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.1.85-1_amd64.deb && \
+    dpkg -i cuda-repo-ubuntu1604_9.1.85-1_amd64.deb && \
+    apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub && \
+    apt-get update && \
     apt-get install -y --no-install-recommends libav-tools \
     fonts-dejavu \
     tzdata \
     gfortran \
-    gcc && apt-get clean && \
+    gcc \
+    cuda-9.0 && \
+    wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb && \
+    wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb && \
+    dpkg -i libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb && \
+    apt-get clean && \
+    rm *.deb && \
     rm -rf /var/lib/apt/lists/*
-
-RUN wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.1.85-1_amd64.deb && \
- dpkg -i cuda-repo-ubuntu1604_9.1.85-1_amd64.deb && \
- apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub && \
- apt-get update; apt-get install -y cuda-9.0 && \
- wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb && \
- wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb && \
- dpkg -i libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb
 
 USER $NB_UID
 
@@ -31,10 +32,8 @@ USER $NB_UID
 # Remove pyqt and qt pulled in for matplotlib since we're only ever going to
 # use notebook-friendly backends in these images
 RUN conda install --quiet --yes \
-    'nomkl' \
     'ipywidgets' \
     'pandas' \
-    'numexpr' \
     'matplotlib' \
     'scipy' \
     'seaborn' \
@@ -42,16 +41,9 @@ RUN conda install --quiet --yes \
     'scikit-image' \
     'sympy' \
     'cython' \
-    'patsy' \
     'statsmodels' \
-    'cloudpickle' \
-    'dill' \
-    'numba' \
     'bokeh' \
     'sqlalchemy' \
-    'hdf5' \
-    'h5py' \
-    'vincent' \
     'beautifulsoup4' \
     'protobuf' \
     'xlrd'  && \
@@ -78,6 +70,8 @@ RUN conda install -v -y -c conda-forge jupyterlab beakerx && \
     rm -rf /home/$NB_USER/.node-gyp && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
+
+RUN pip install --upgrade tensorflow-gpu
 
 # Import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/

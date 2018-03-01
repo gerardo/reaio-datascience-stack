@@ -24,6 +24,7 @@ RUN wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_
     dpkg -i libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb && \
     apt-get clean && \
     rm *.deb && \
+    rm -rf /home/$NB_USER/.gnupg && \
     rm -rf /var/lib/apt/lists/*
 
 USER $NB_UID

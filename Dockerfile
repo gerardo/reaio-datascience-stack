@@ -71,6 +71,14 @@ RUN conda install -v -y -c conda-forge jupyterlab beakerx && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
+RUN wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.1.85-1_amd64.deb
+RUN dpkg -i cuda-repo-ubuntu1604_9.1.85-1_amd64.deb
+RUN apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub
+RUN apt-get update; apt-get install -y linux-headers-$(uname -r) cuda-9.0
+RUN wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb
+RUN wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb
+RUN dpkg -i libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb
+
 # Import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
 RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" && \

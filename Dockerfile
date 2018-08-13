@@ -2,7 +2,7 @@
 # Distributed under the terms of the Modified BSD License.
 FROM jupyter/minimal-notebook
 
-LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
+LABEL maintainer="Gerardo Curiel <gerardo@gerar.do>"
 
 USER root
 
@@ -58,11 +58,10 @@ RUN conda install --quiet --yes \
     fix-permissions /home/$NB_USER
 
 # Install and enable JupyterLab and Hub integration
-RUN conda install -v -y -c conda-forge jupyterlab beakerx && \
+RUN conda install -v -y -c conda-forge jupyterlab && \
     jupyter serverextension enable --py jupyterlab --sys-prefix && \
     jupyter labextension install @jupyterlab/hub-extension && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
-    jupyter labextension install beakerx-jupyterlab && \
     jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
     conda clean -tipsy && \
     npm cache clean && \
@@ -72,7 +71,7 @@ RUN conda install -v -y -c conda-forge jupyterlab beakerx && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
-RUN pip install --upgrade tensorflow-gpu
+RUN pip install --upgrade tensorflow-gpu awscli
 
 # Import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/

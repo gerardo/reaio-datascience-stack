@@ -1,0 +1,15 @@
+sudo: required
+dist: trusty
+
+services:
+  - docker
+
+jobs:
+  include:
+    - stage: build reaio-datascience-stack docker image
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t reaio-datascience-stack .
+        - docker images
+        - docker tag reaio-datascience-stack $DOCKER_USERNAME/reaio-datascience-stack
+        - docker push $DOCKER_USERNAME/reaio-datascience-stack

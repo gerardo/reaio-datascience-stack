@@ -23,7 +23,7 @@ RUN apt-get update && \
     # wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb && \
     # dpkg -i libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb && \
     apt-get clean && \
-    rm *.deb && \
+    # rm *.deb && \
     rm -rf /home/$NB_USER/.gnupg && \
     rm -rf /var/lib/apt/lists/*
 

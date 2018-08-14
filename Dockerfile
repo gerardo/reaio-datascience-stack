@@ -9,19 +9,19 @@ USER root
 RUN echo "$NB_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/notebook
 
 # Prerequisites
-RUN apt-get update && apt-get install -y --no-install-recommends gnupg2 && \
-    wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.1.85-1_amd64.deb && \
-    dpkg -i cuda-repo-ubuntu1604_9.1.85-1_amd64.deb && \
-    apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub && \
-    apt-get update && \
+# RUN apt-get update && apt-get install -y --no-install-recommends gnupg2 && \
+#     wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.1.85-1_amd64.deb && \
+#     dpkg -i cuda-repo-ubuntu1604_9.1.85-1_amd64.deb && \
+#     apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub && \
+RUN apt-get update && \
     apt-get install -y --no-install-recommends fonts-dejavu \
     tzdata \
     gfortran \
-    gcc \
-    cuda-9.0 && \
-    wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb && \
-    wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb && \
-    dpkg -i libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb && \
+    gcc && \
+    # cuda-9.0 && \
+    # wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb && \
+    # wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb && \
+    # dpkg -i libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb && \
     apt-get clean && \
     rm *.deb && \
     rm -rf /home/$NB_USER/.gnupg && \
@@ -71,7 +71,7 @@ RUN conda install -v -y -c conda-forge jupyterlab && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
-RUN pip install --upgrade tensorflow-gpu awscli
+RUN pip install --upgrade tensorflow awscli
 
 # Import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
